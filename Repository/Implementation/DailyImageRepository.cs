@@ -14,6 +14,12 @@ namespace WebApplication6.Repository.Implementation
             _context = context;
         }
 
+        public async Task<DailyImage> GetArticleByDateAsync(DateTime date)
+        {
+            return await _context.DailyImages
+                .Include(a => a.Localizations)
+                .FirstOrDefaultAsync(d => d.Date.Date == date.Date);
+        }
         public async Task<IEnumerable<int>> GetAvailableYearsAsync()
         {
             return await _context.DailyImages

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication6.Dtos;
 using WebApplication6.Models;
 using WebApplication6.Repository.Services;
 using WebApplication6.Request;
@@ -159,17 +160,17 @@ namespace WebApplication6.Controllers
             await _repository.UpdateArticleAsync(article);
             return NoContent();
         }
+
         [HttpPut("update-by-date")]
         public async Task<IActionResult> UpdateArticleByDate(
-        [FromQuery] string date,
-        [FromBody] UpdateArticleByDateRequest request)
+    [FromQuery] string date,
+    [FromBody] UpdateArticleByDateRequest request)
         {
             if (!DateTime.TryParse(date, out DateTime parsedDate))
             {
                 return BadRequest("Invalid date format. Use format: YYYY-MM-DD");
             }
 
-            // გადავიყვანოთ DailyImageLocalizationSimplified ობიექტები DailyImageLocalization ობიექტებად
             var localizations = request.Localizations.Select(l => new DailyImageLocalization
             {
                 LanguageCode = l.LanguageCode,
@@ -179,8 +180,33 @@ namespace WebApplication6.Controllers
 
             await _repository.UpdateArticleByDateAsync(parsedDate, request.ImagePath, localizations);
 
-            return NoContent();
+            // პოვნა განახლებული სტატიისთვის
+            var updatedArticles = await _repository.GetArticlesForThreeDaysAsync(parsedDate);
+            var updatedArticle = updatedArticles.FirstOrDefault(a => a.Date.Date == parsedDate.Date);
+
+            if (updatedArticle == null)
+            {
+                return NotFound("Article not found.");
+            }
+
+            // გადაყვანა DTO-ში
+            var articleDto = new DailyImageDto
+            {
+                Id = updatedArticle.Id,
+                Date = updatedArticle.Date,
+                ImagePath = updatedArticle.ImagePath,
+                Localizations = updatedArticle.Localizations.Select(l => new DailyImageLocalizationDto
+                {
+                    Id = l.Id,
+                    LanguageCode = l.LanguageCode,
+                    Title = l.Title,
+                    Description = l.Description
+                }).ToList()
+            };
+
+            return Ok(articleDto);
         }
+
 
         [HttpDelete]
         public async Task<IActionResult> DeleteArticleByDate([FromQuery] string date)

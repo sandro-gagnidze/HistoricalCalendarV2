@@ -4,6 +4,7 @@ namespace WebApplication6.Repository.Services
 {
     public interface IDailyImageRepository
     {
+        Task<DailyImage> GetArticleByDateAsync(DateTime date);
         Task<IEnumerable<int>> GetAvailableYearsAsync();
         Task<IEnumerable<int>> GetAvailableMonthsAsync(int year);
         Task<IEnumerable<int>> GetCalendarDaysAsync(int year, int month);
