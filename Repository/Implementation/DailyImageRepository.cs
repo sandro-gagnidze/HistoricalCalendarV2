@@ -165,20 +165,30 @@ namespace WebApplication6.Repository.Implementation
             return await _context.DailyImageLocalizations.FirstOrDefaultAsync(l => l.DailyImageId == id && l.LanguageCode == languageCode);
         }
 
-        public async Task CreateArticleWithLocalizationAsync(DailyImage article, List<DailyImageLocalization> localizations)
+       public async Task CreateArticleWithLocalizationAsync(DailyImage article, List<DailyImageLocalization> localizations)
         {
-            article.Date = article.Date.Date; // მხოლოდ თარიღი, საათების გარეშე
+            
+            bool articleExists = await _context.DailyImages.AnyAsync(d => d.Date.Date == article.Date.Date);
+        
+            if (articleExists)
+            {
+                throw new InvalidOperationException("სტატია ამ თარიღისთვის უკვე არსებობს.");
+            }
+        
+           
+            article.Date = article.Date.Date;
             await _context.DailyImages.AddAsync(article);
             await _context.SaveChangesAsync();
-
+        
+           
             foreach (var localization in localizations)
             {
                 localization.DailyImageId = article.Id;
                 await _context.DailyImageLocalizations.AddAsync(localization);
             }
-
             await _context.SaveChangesAsync();
         }
+
 
         public async Task<List<DailyImageLocalization>> GetArticleLocalizationsByIdAsync(int id)
         {
@@ -186,3 +196,4 @@ namespace WebApplication6.Repository.Implementation
         }
     }
 }
+
