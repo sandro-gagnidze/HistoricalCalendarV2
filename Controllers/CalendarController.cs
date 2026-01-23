@@ -92,10 +92,16 @@ namespace WebApplication6.Controllers
                 Title = l.Title,
                 Description = l.Description
             }).ToList();
-
+            try    
+            {
             await _repository.CreateArticleWithLocalizationAsync(article, localizations);
 
             return CreatedAtAction(nameof(GetTodayAndAdjacentDaysArticles), new { lang = "ka" }, article);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(ex.Message); 
+            }
         }
 
         [AllowAnonymous]
@@ -239,3 +245,4 @@ namespace WebApplication6.Controllers
 
     }
 }
+
