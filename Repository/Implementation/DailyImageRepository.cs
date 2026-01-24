@@ -140,25 +140,60 @@ namespace WebApplication6.Repository.Implementation
             }
         }
 
+        //public async Task<string> UploadImageAsync(IFormFile file)
+        //{
+        //    if (file == null || file.Length == 0)
+        //        throw new ArgumentException("No file uploaded.");
+
+        //    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+        //    Console.WriteLine($"Uploads folder path: {uploadsFolder}");
+        //    if (!Directory.Exists(uploadsFolder))
+        //    {
+        //        Directory.CreateDirectory(uploadsFolder);
+        //        Console.WriteLine($"Directory created: {uploadsFolder}");
+        //    }
+        //    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+        //    var filePath = Path.Combine(uploadsFolder, fileName);
+        //    Console.WriteLine($"File will be saved to: {filePath}"); // დაბეჭდეთ სურათის სრული გზა
+
+        //    using (var stream = new FileStream(filePath, FileMode.Create))
+        //    {
+        //        await file.CopyToAsync(stream);
+        //    }
+        //    Console.WriteLine($"File saved: {System.IO.File.Exists(filePath)}");
+        //    return $"/uploads/{fileName}";
+        //}
+
         public async Task<string> UploadImageAsync(IFormFile file)
         {
             if (file == null || file.Length == 0)
                 throw new ArgumentException("No file uploaded.");
 
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+            // მითითეთ სრული გზა პროექტის ფოლდერში
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "wwwroot", "uploads");
+
+            Console.WriteLine($"Uploads folder path: {Path.GetFullPath(uploadsFolder)}"); // დაბეჭდეთ სრული გზა
+
             if (!Directory.Exists(uploadsFolder))
+            {
                 Directory.CreateDirectory(uploadsFolder);
+                Console.WriteLine($"Directory created: {Path.GetFullPath(uploadsFolder)}");
+            }
 
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
             var filePath = Path.Combine(uploadsFolder, fileName);
+            Console.WriteLine($"File will be saved to: {Path.GetFullPath(filePath)}"); // დაბეჭდეთ სრული გზა
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
 
+            Console.WriteLine($"File saved: {System.IO.File.Exists(filePath)}"); // შეამოწმეთ, შეინახა თუ არა ფაილი
+
             return $"/uploads/{fileName}";
         }
+
 
         public async Task<DailyImageLocalization> GetArticleLocalizationByIdAndLanguageAsync(int id, string languageCode)
         {
