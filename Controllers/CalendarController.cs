@@ -29,6 +29,20 @@ namespace WebApplication6.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("article-by-date")]
+        public async Task<IActionResult> GetArticleByDate([FromQuery] DateTime date)
+        {
+            try
+            {
+                var articles = await _repository.GetArticleByDateAsync(date);
+                return Ok(articles);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        [AllowAnonymous]
         [HttpGet("monthly-articles")]
         public async Task<IActionResult> GetMonthlyArticles([FromQuery] DateTime date, [FromQuery] string languageCode = "ka")
         {
