@@ -200,7 +200,7 @@ namespace WebApplication6.Repository.Implementation
             return await _context.DailyImageLocalizations.FirstOrDefaultAsync(l => l.DailyImageId == id && l.LanguageCode == languageCode);
         }
 
-       public async Task CreateArticleWithLocalizationAsync(DailyImage article, List<DailyImageLocalization> localizations)
+        public async Task CreateArticleWithLocalizationAsync(DailyImage article, List<DailyImageLocalization> localizations)
         {
             
             bool articleExists = await _context.DailyImages.AnyAsync(d => d.Date.Date == article.Date.Date);
@@ -223,7 +223,8 @@ namespace WebApplication6.Repository.Implementation
             }
             await _context.SaveChangesAsync();
         }
-        public async Task<Dictionary<string, object>> GetAllDaysInMonthWithArticlesAsync(DateTime date, string languageCode)
+        
+        public async Task<Dictionary<string, object>> GetAllDaysInMonthWithArticlesAsync(DateTime date)
         {
             var result = new Dictionary<string, object>();
 
@@ -243,31 +244,21 @@ namespace WebApplication6.Repository.Implementation
 
                 if (article != null)
                 {
-                    // პოვნათ ლოკალიზაცია მითითებული ენის კოდით
-                    var localization = article.Localizations.FirstOrDefault(l => l.LanguageCode == languageCode);
+                    // პოვნათ ყველა ლოკალიზაცია ამ სტატიისთვის
+                    var localizations = article.Localizations
+                        .ToDictionary(l => l.LanguageCode, l => new
+                        {
+                            l.Title,
+                            l.Description
+                        });
 
-                    if (localization != null)
+                    result[dateKey] = new
                     {
-                        result[dateKey] = new
-                        {
-                            article.Id,
-                            Date = article.Date.ToString("yyyy-MM-dd"),
-                            article.ImagePath,
-                            localization.Title,
-                            localization.Description
-                        };
-                    }
-                    else
-                    {
-                        result[dateKey] = new
-                        {
-                            article.Id,
-                            Date = article.Date.ToString("yyyy-MM-dd"),
-                            article.ImagePath,
-                            Title = (object)null,
-                            Description = (object)null
-                        };
-                    }
+                        article.Id,
+                        Date = article.Date.ToString("yyyy-MM-dd"),
+                        article.ImagePath,
+                        Localizations = localizations
+                    };
                 }
                 else
                 {

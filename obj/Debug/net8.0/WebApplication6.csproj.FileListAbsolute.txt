@@ -147,10 +147,10 @@ C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\staticwebassets\
 C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.WebApplication6.props
 C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.WebApplication6.props
 C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\staticwebassets.pack.json
-C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\WebAppli.2F5BDC2E.Up2Date
 C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\WebApplication6.dll
 C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\refint\WebApplication6.dll
 C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\WebApplication6.pdb
 C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\WebApplication6.genruntimeconfig.cache
 C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\ref\WebApplication6.dll
+C:\Users\Ani\Source\Repos\HistoricalCalendarV2\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

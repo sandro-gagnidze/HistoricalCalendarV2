@@ -11,6 +11,8 @@ namespace WebApplication6.Data
 
         public DbSet<DailyImage> DailyImages { get; set; }
         public DbSet<DailyImageLocalization> DailyImageLocalizations { get; set; }
+        public DbSet<YearInfo> YearInfos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

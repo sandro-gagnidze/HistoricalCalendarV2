@@ -270,6 +270,26 @@ namespace WebApplication6.Migrations
                     b.ToTable("DailyImageLocalizations");
                 });
 
+            modelBuilder.Entity("WebApplication6.Models.YearInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("YearInfos");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -324,12 +344,17 @@ namespace WebApplication6.Migrations
             modelBuilder.Entity("WebApplication6.Models.DailyImageLocalization", b =>
                 {
                     b.HasOne("WebApplication6.Models.DailyImage", "DailyImage")
-                        .WithMany()
+                        .WithMany("Localizations")
                         .HasForeignKey("DailyImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("DailyImage");
+                });
+
+            modelBuilder.Entity("WebApplication6.Models.DailyImage", b =>
+                {
+                    b.Navigation("Localizations");
                 });
 #pragma warning restore 612, 618
         }

@@ -44,11 +44,11 @@ namespace WebApplication6.Controllers
         }
         [AllowAnonymous]
         [HttpGet("monthly-articles")]
-        public async Task<IActionResult> GetMonthlyArticles([FromQuery] DateTime date, [FromQuery] string languageCode = "ka")
+        public async Task<IActionResult> GetMonthlyArticles([FromQuery] DateTime date)
         {
             try
             {
-                var articles = await _repository.GetAllDaysInMonthWithArticlesAsync(date, languageCode);
+                var articles = await _repository.GetAllDaysInMonthWithArticlesAsync(date);
                 return Ok(articles);
             }
             catch (Exception ex)

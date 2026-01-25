@@ -4343,11 +4343,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ani\\source\\repos\\WebApplication6\\WebApplication6\\WebApplication6.csproj",
+      "projectUniqueName": "C:\\Users\\Ani\\source\\repos\\HistoricalCalendarV2\\WebApplication6.csproj",
       "projectName": "WebApplication6",
-      "projectPath": "C:\\Users\\Ani\\source\\repos\\WebApplication6\\WebApplication6\\WebApplication6.csproj",
+      "projectPath": "C:\\Users\\Ani\\source\\repos\\HistoricalCalendarV2\\WebApplication6.csproj",
       "packagesPath": "C:\\Users\\Ani\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ani\\source\\repos\\WebApplication6\\WebApplication6\\obj\\",
+      "outputPath": "C:\\Users\\Ani\\source\\repos\\HistoricalCalendarV2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
