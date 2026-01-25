@@ -223,14 +223,61 @@ namespace WebApplication6.Repository.Implementation
             }
             await _context.SaveChangesAsync();
         }
-        public async Task<IEnumerable<DailyImage>> GetAllArticlesByMonthAsync(DateTime date)
+        public async Task<Dictionary<string, object>> GetAllDaysInMonthWithArticlesAsync(DateTime date, string languageCode)
         {
-            return await _context.DailyImages
-                           .Where(d => d.Date.Year == date.Year && d.Date.Month == date.Month)
-                           .Include(a => a.Localizations)
-                           .OrderBy(d => d.Date)
-                           .ToListAsync();
+            var result = new Dictionary<string, object>();
+
+            // მითითებული წლის და თვის დღეების რაოდენობის პოვნა
+            int daysInMonth = DateTime.DaysInMonth(date.Year, date.Month);
+
+            // ყველა დღისთვის შექმენით ჩანაწერი
+            for (int day = 1; day <= daysInMonth; day++)
+            {
+                DateTime currentDate = new DateTime(date.Year, date.Month, day);
+                string dateKey = currentDate.ToString("yyyy-MM-dd");
+
+                // პოვნათ სტატია ამ თარიღისთვის
+                var article = await _context.DailyImages
+                    .Include(a => a.Localizations)
+                    .FirstOrDefaultAsync(d => d.Date.Year == date.Year && d.Date.Month == date.Month && d.Date.Day == day);
+
+                if (article != null)
+                {
+                    // პოვნათ ლოკალიზაცია მითითებული ენის კოდით
+                    var localization = article.Localizations.FirstOrDefault(l => l.LanguageCode == languageCode);
+
+                    if (localization != null)
+                    {
+                        result[dateKey] = new
+                        {
+                            article.Id,
+                            Date = article.Date.ToString("yyyy-MM-dd"),
+                            article.ImagePath,
+                            localization.Title,
+                            localization.Description
+                        };
+                    }
+                    else
+                    {
+                        result[dateKey] = new
+                        {
+                            article.Id,
+                            Date = article.Date.ToString("yyyy-MM-dd"),
+                            article.ImagePath,
+                            Title = (object)null,
+                            Description = (object)null
+                        };
+                    }
+                }
+                else
+                {
+                    result[dateKey] = null;
+                }
+            }
+
+            return result;
         }
+
 
 
         public async Task<List<DailyImageLocalization>> GetArticleLocalizationsByIdAsync(int id)

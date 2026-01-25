@@ -29,20 +29,12 @@ namespace WebApplication6.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("{year}/months")]
-        public async Task<IActionResult> GetAvailableMonths(int year)
-        {
-            var months = await _repository.GetAvailableMonthsAsync(year);
-            return Ok(months);
-        }
-
-        [AllowAnonymous]
-        [HttpGet("articles-by-month")]
-        public async Task<IActionResult> GetArticlesByMonth([FromQuery] DateTime date)
+        [HttpGet("monthly-articles")]
+        public async Task<IActionResult> GetMonthlyArticles([FromQuery] DateTime date, [FromQuery] string languageCode = "ka")
         {
             try
             {
-                var articles = await _repository.GetAllArticlesByMonthAsync(date);
+                var articles = await _repository.GetAllDaysInMonthWithArticlesAsync(date, languageCode);
                 return Ok(articles);
             }
             catch (Exception ex)
@@ -50,6 +42,7 @@ namespace WebApplication6.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
 
         [AllowAnonymous]
