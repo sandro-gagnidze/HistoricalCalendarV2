@@ -223,6 +223,14 @@ namespace WebApplication6.Repository.Implementation
             }
             await _context.SaveChangesAsync();
         }
+        public async Task<IEnumerable<DailyImage>> GetAllArticlesByMonthAsync(DateTime date)
+        {
+            return await _context.DailyImages
+                           .Where(d => d.Date.Year == date.Year && d.Date.Month == date.Month)
+                           .Include(a => a.Localizations)
+                           .OrderBy(d => d.Date)
+                           .ToListAsync();
+        }
 
 
         public async Task<List<DailyImageLocalization>> GetArticleLocalizationsByIdAsync(int id)

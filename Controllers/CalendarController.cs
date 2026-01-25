@@ -37,6 +37,22 @@ namespace WebApplication6.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("articles-by-month")]
+        public async Task<IActionResult> GetArticlesByMonth([FromQuery] DateTime date)
+        {
+            try
+            {
+                var articles = await _repository.GetAllArticlesByMonthAsync(date);
+                return Ok(articles);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+        [AllowAnonymous]
         [HttpGet("{year}/{month}/days")]
         public async Task<IActionResult> GetCalendarDays(int year, int month)
         {

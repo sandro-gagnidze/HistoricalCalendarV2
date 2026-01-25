@@ -18,5 +18,6 @@ namespace WebApplication6.Repository.Services
         Task<DailyImageLocalization> GetArticleLocalizationByIdAndLanguageAsync(int id, string languageCode);
         Task CreateArticleWithLocalizationAsync(DailyImage article, List<DailyImageLocalization> localizations);
         Task<List<DailyImageLocalization>> GetArticleLocalizationsByIdAsync(int id);
+        Task<IEnumerable<DailyImage>> GetAllArticlesByMonthAsync(DateTime date);
     }
 }
